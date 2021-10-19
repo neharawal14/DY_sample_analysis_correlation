@@ -309,69 +309,192 @@ public :
 
    public:
     // variables
-    
+    double pi = TMath::Pi();    
     bool debug_base = false;
-       
-    TString saving_path = "/afs/cern.ch/user/n/nrawal/work/DY_analysis/plots_tmp/";
-    
-    double pT_list[10] = {10,30,50,70,90,110,130,150,170,190}; 
-    std::pair<double,double> mean_sigma[10];
-    double mean[10];
-    double sigma[10];
-    TH1D * hist_Zmass_positive_1stbin = new TH1D("hist_Zmass_positive_1stbin"," Gen Z mass for  #mu^{+} between 0 and 20 GeV",120,60,120); 
-    TH1D * hist_Zmass_positive_2ndbin = new TH1D("hist_Zmass_positive_2ndbin"," Gen Z mass for  #mu^{+} between 20 and 40 GeV",120,60,120); 
-    TH1D * hist_Zmass_positive_3rdbin = new TH1D("hist_Zmass_positive_3rdbin"," Gen Z mass for  #mu^{+} between 40 and 60 GeV",120,60,120); 
-    TH1D * hist_Zmass_positive_4thbin = new TH1D("hist_Zmass_positive_4thbin"," Gen Z mass for  #mu^{+} between 60 and 80 GeV",120,60,120); 
-    TH1D * hist_Zmass_positive_5thbin = new TH1D("hist_Zmass_positive_5thbin"," Gen Z mass for  #mu^{+} between 80 and 100 GeV",120,60,120); 
-    TH1D * hist_Zmass_positive_6thbin = new TH1D("hist_Zmass_positive_6thbin"," Gen Z mass for  #mu^{+} between 100 and 120 GeV",120,60,120); 
-    TH1D * hist_Zmass_positive_7thbin = new TH1D("hist_Zmass_positive_7thbin"," Gen Z mass for  #mu^{+} between 120 and 140 GeV",120,60,120); 
-    TH1D * hist_Zmass_positive_8thbin = new TH1D("hist_Zmass_positive_8thbin"," Gen Z mass for  #mu^{+} between 140 and 160 GeV",120,60,120); 
-    TH1D * hist_Zmass_positive_9thbin = new TH1D("hist_Zmass_positive_9thbin"," Gen Z mass for  #mu^{+} between 160 and 180 GeV",120,60,120); 
-    TH1D * hist_Zmass_positive_10thbin = new TH1D("hist_Zmass_positive_10thbin"," Gen Z mass for  #mu^{+} between 180 and 200 GeV",120,60,120); 
+    bool analyze_pT = false;
+    bool analyze_eta = true;
+    bool analyze_phi = false;
+
+    TString saving_path = "/afs/cern.ch/user/n/nrawal/work/DY_analysis/plots/plots_eta/";
+    double pT_list[10] = {7.5,22.5,35,45,55,65,82.5,100,120,165};
+    double eta_list[8] = {0.3,0.9,1.5,2.1,-2.1,-1.5,-0.9,-0.3}; 
+    double phi_list[8] = {pi/8,3*pi/8,5*pi/8,7*pi/8,9*pi/8,11*pi/8,13*pi/8,15*pi/8}; 
+    std::pair<double,double> mean_sigma_Zmass;
+    std::pair<double,double> mean_sigma_positive[10];
+    std::pair<double,double> mean_sigma_positive_phi[8];
+    std::pair<double,double> mean_sigma_positive_eta[8];
+    std::pair<double,double> mean_sigma_negative[10];
+    std::pair<double,double> mean_sigma_negative_phi[8];
+    std::pair<double,double> mean_sigma_negative_eta[8];
+    double mean_positive[10];
+    double sigma_positive[10];
+    double sigma_positive_eta[8];
+     double mean_positive_eta[8];
+    double mean_positive_phi[8];
+     double mean_negative[10];
+    double sigma_negative[10];
+    double sigma_negative_eta[8];
+    double mean_negative_eta[8];
+    double mean_negative_phi[8];
+    double sigma_negative_phi[8];
+    double sigma_positive_phi[8];
+    TH1D * hist_Zmass_positive_1stbin = new TH1D("hist_Zmass_positive_1stbin"," Gen Z mass for  #mu^{+} between 0 and 15 GeV",300,60,120); 
+    TH1D * hist_Zmass_positive_2ndbin = new TH1D("hist_Zmass_positive_2ndbin"," Gen Z mass for  #mu^{+} between 15 and 30 GeV",300,60,120); 
+    TH1D * hist_Zmass_positive_3rdbin = new TH1D("hist_Zmass_positive_3rdbin"," Gen Z mass for  #mu^{+} between 30 and 40 GeV",300,60,120); 
+    TH1D * hist_Zmass_positive_4thbin = new TH1D("hist_Zmass_positive_4thbin"," Gen Z mass for  #mu^{+} between 40 and 50 GeV",300,60,120); 
+    TH1D * hist_Zmass_positive_5thbin = new TH1D("hist_Zmass_positive_5thbin"," Gen Z mass for  #mu^{+} between 50 and 60 GeV",300,60,120); 
+    TH1D * hist_Zmass_positive_6thbin = new TH1D("hist_Zmass_positive_6thbin"," Gen Z mass for  #mu^{+} between 60 and 75 GeV",300,60,120); 
+    TH1D * hist_Zmass_positive_7thbin = new TH1D("hist_Zmass_positive_7thbin"," Gen Z mass for  #mu^{+} between 75 and 90 GeV",300,60,120); 
+    TH1D * hist_Zmass_positive_8thbin = new TH1D("hist_Zmass_positive_8thbin"," Gen Z mass for  #mu^{+} between 90 and 110 GeV",300,60,120); 
+    TH1D * hist_Zmass_positive_9thbin = new TH1D("hist_Zmass_positive_9thbin"," Gen Z mass for  #mu^{+} between 110 and 130 GeV",300,60,120); 
+    TH1D * hist_Zmass_positive_10thbin = new TH1D("hist_Zmass_positive_10thbin"," Gen Z mass for  #mu^{+} between 130 and 200 GeV",300,60,120); 
+
+   TH1D * hist_Zmass_negative_1stbin = new TH1D("hist_Zmass_negative_1stbin"," Gen Z mass for  #mu^{-} between 0 and 15 GeV",300,60,120); 
+    TH1D * hist_Zmass_negative_2ndbin = new TH1D("hist_Zmass_negative_2ndbin"," Gen Z mass for  #mu^{-} between 15 and 30 GeV",300,60,120); 
+    TH1D * hist_Zmass_negative_3rdbin = new TH1D("hist_Zmass_negative_3rdbin"," Gen Z mass for  #mu^{-} between 30 and 40 GeV",300,60,120); 
+    TH1D * hist_Zmass_negative_4thbin = new TH1D("hist_Zmass_negative_4thbin"," Gen Z mass for  #mu^{-} between 40 and 50 GeV",300,60,120); 
+    TH1D * hist_Zmass_negative_5thbin = new TH1D("hist_Zmass_negative_5thbin"," Gen Z mass for  #mu^{-} between 50 and 60 GeV",300,60,120); 
+    TH1D * hist_Zmass_negative_6thbin = new TH1D("hist_Zmass_negative_6thbin"," Gen Z mass for  #mu^{-} between 60 and 75 GeV",300,60,120); 
+    TH1D * hist_Zmass_negative_7thbin = new TH1D("hist_Zmass_negative_7thbin"," Gen Z mass for  #mu^{-} between 75 and 90 GeV",300,60,120); 
+    TH1D * hist_Zmass_negative_8thbin = new TH1D("hist_Zmass_negative_8thbin"," Gen Z mass for  #mu^{-} between 90 and 110 GeV",300,60,120); 
+    TH1D * hist_Zmass_negative_9thbin = new TH1D("hist_Zmass_negative_9thbin"," Gen Z mass for  #mu^{-} between 110 and 130 GeV",300,60,120); 
+    TH1D * hist_Zmass_negative_10thbin = new TH1D("hist_Zmass_negative_10thbin"," Gen Z mass for  #mu^{-} between 130 and 200 GeV",300,60,120); 
+
+    TH1D * hist_Zmass_negative_1st_etabin = new TH1D("hist_Zmass_negative_1st_etabin"," Gen Z mass for 0 #leq #eta < 0.6",300,60,120); 
+    TH1D * hist_Zmass_negative_2nd_etabin = new TH1D("hist_Zmass_negative_2nd_etabin"," Gen Z mass for 0.6 #leq #eta < 1.2",300,60,120); 
+    TH1D * hist_Zmass_negative_3rd_etabin = new TH1D("hist_Zmass_negative_3rd_etabin"," Gen Z mass for 1.2 #leq #eta < 1.8",300,60,120); 
+    TH1D * hist_Zmass_negative_4th_etabin = new TH1D("hist_Zmass_negative_4th_etabin"," Gen Z mass for 1.8 #leq #eta #leq 2.4",300,60,120); 
+    TH1D * hist_Zmass_negative_5th_etabin = new TH1D("hist_Zmass_negative_5th_etabin"," Gen Z mass for -2.4 #leq #eta < -1.8",300,60,120); 
+    TH1D * hist_Zmass_negative_6th_etabin = new TH1D("hist_Zmass_negative_6th_etabin"," Gen Z mass for -1.8 #leq #eta < -1.2",300,60,120); 
+    TH1D * hist_Zmass_negative_7th_etabin = new TH1D("hist_Zmass_negative_7th_etabin"," Gen Z mass for -1.2 #leq #eta < -0.6",300,60,120); 
+    TH1D * hist_Zmass_negative_8th_etabin = new TH1D("hist_Zmass_negative_8th_etabin"," Gen Z mass for -0.6 #leq #eta < 0",300,60,120); 
+
+    TH1D * hist_Zmass_positive_1st_etabin = new TH1D("hist_Zmass_positive_1st_etabin"," Gen Z mass for 0 #leq #eta < 0.6",300,60,120); 
+    TH1D * hist_Zmass_positive_2nd_etabin = new TH1D("hist_Zmass_positive_2nd_etabin"," Gen Z mass for 0.6 #leq #eta < 1.2",300,60,120); 
+    TH1D * hist_Zmass_positive_3rd_etabin = new TH1D("hist_Zmass_positive_3rd_etabin"," Gen Z mass for 1.2 #leq #eta < 1.8",300,60,120); 
+    TH1D * hist_Zmass_positive_4th_etabin = new TH1D("hist_Zmass_positive_4th_etabin"," Gen Z mass for 1.8 #leq #eta #leq 2.4",300,60,120); 
+    TH1D * hist_Zmass_positive_5th_etabin = new TH1D("hist_Zmass_positive_5th_etabin"," Gen Z mass for -2.4 #leq #eta < -1.8",300,60,120); 
+    TH1D * hist_Zmass_positive_6th_etabin = new TH1D("hist_Zmass_positive_6th_etabin"," Gen Z mass for -1.8 #leq #eta < -1.2",300,60,120); 
+    TH1D * hist_Zmass_positive_7th_etabin = new TH1D("hist_Zmass_positive_7th_etabin"," Gen Z mass for -1.2 #leq #eta < -0.6",300,60,120); 
+    TH1D * hist_Zmass_positive_8th_etabin = new TH1D("hist_Zmass_positive_8th_etabin"," Gen Z mass for -0.6 #leq #eta < 0",300,60,120); 
+
+    TH1D * hist_Zmass_negative_1st_phibin = new TH1D("hist_Zmass_negative_1st_phibin"," Gen Z mass for 0 #leq #phi < 0.6",300,60,120); 
+    TH1D * hist_Zmass_negative_2nd_phibin = new TH1D("hist_Zmass_negative_2nd_phibin"," Gen Z mass for 0.6 #leq #phi < 1.2",300,60,120); 
+    TH1D * hist_Zmass_negative_3rd_phibin = new TH1D("hist_Zmass_negative_3rd_phibin"," Gen Z mass for 1.2 #leq #phi < 1.8",300,60,120); 
+    TH1D * hist_Zmass_negative_4th_phibin = new TH1D("hist_Zmass_negative_4th_phibin"," Gen Z mass for 1.8 #leq #phi #leq 2.4",300,60,120); 
+    TH1D * hist_Zmass_negative_5th_phibin = new TH1D("hist_Zmass_negative_5th_phibin"," Gen Z mass for -2.4 #leq #phi < -1.8",300,60,120); 
+    TH1D * hist_Zmass_negative_6th_phibin = new TH1D("hist_Zmass_negative_6th_phibin"," Gen Z mass for -1.8 #leq #phi < -1.2",300,60,120); 
+    TH1D * hist_Zmass_negative_7th_phibin = new TH1D("hist_Zmass_negative_7th_phibin"," Gen Z mass for -1.2 #leq #phi < -0.6",300,60,120); 
+    TH1D * hist_Zmass_negative_8th_phibin = new TH1D("hist_Zmass_negative_8th_phibin"," Gen Z mass for -0.6 #leq #phi < 0",300,60,120); 
+
+    TH1D * hist_Zmass_positive_1st_phibin = new TH1D("hist_Zmass_positive_1st_phibin"," Gen Z mass for 0 #leq #phi < 0.6",300,60,120); 
+    TH1D * hist_Zmass_positive_2nd_phibin = new TH1D("hist_Zmass_positive_2nd_phibin"," Gen Z mass for 0.6 #leq #phi < 1.2",300,60,120); 
+    TH1D * hist_Zmass_positive_3rd_phibin = new TH1D("hist_Zmass_positive_3rd_phibin"," Gen Z mass for 1.2 #leq #phi < 1.8",300,60,120); 
+    TH1D * hist_Zmass_positive_4th_phibin = new TH1D("hist_Zmass_positive_4th_phibin"," Gen Z mass for 1.8 #leq #phi #leq 2.4",300,60,120); 
+    TH1D * hist_Zmass_positive_5th_phibin = new TH1D("hist_Zmass_positive_5th_phibin"," Gen Z mass for -2.4 #leq #phi < -1.8",300,60,120); 
+    TH1D * hist_Zmass_positive_6th_phibin = new TH1D("hist_Zmass_positive_6th_phibin"," Gen Z mass for -1.8 #leq #phi < -1.2",300,60,120); 
+    TH1D * hist_Zmass_positive_7th_phibin = new TH1D("hist_Zmass_positive_7th_phibin"," Gen Z mass for -1.2 #leq #phi < -0.6",300,60,120); 
+    TH1D * hist_Zmass_positive_8th_phibin = new TH1D("hist_Zmass_positive_8th_phibin"," Gen Z mass for -0.6 #leq #phi < 0",300,60,120); 
 
 
-    TH1D * hist_gen_pT1 = new TH1D("hist_gen_pT1", " Gen pT of first lepton " , 100,0,200);
-    TH1D * hist_gen_pT2 = new TH1D("hist_gen_pT2", " Gen pT of second lepton " , 100,0,200);
+
+    TH1D * hist_gen_pT1 = new TH1D("hist_gen_pT1", " Gen pT of first lepton " , 400,0,200);
+    TH1D * hist_gen_pT2 = new TH1D("hist_gen_pT2", " Gen pT of second lepton " , 400,0,200);
     TH1D * hist_id1 = new TH1D("hist_id1", " id  of first lepton " , 30,-15,15);
     TH1D * hist_id2 = new TH1D("hist_id2", " id  of second lepton " , 30,-15,15);
-    TH1D * hist_gen_Zmass = new TH1D("hist_gen_Zmass"," Gen Z mass",120,60,120); 
+    TH1D * hist_gen_Zmass = new TH1D("hist_gen_Zmass"," Gen Z mass",300,60,120); 
     
-    TH1D * hist_gen_positive_mu = new TH1D("hist_gen_positive_mu", " Gen pT (#mu^{+}) " , 100,0,200);
+    TH1D * hist_gen_positive_mu = new TH1D("hist_gen_positive_mu", " Gen pT (#mu^{+}) " , 400,0,200);
     TH1D * hist_id_positive_mu = new TH1D("hist_id_positive_mu", " id (#mu^{+}) " , 15,0,15);
+   
+    TH1D * hist_gen_negative_mu = new TH1D("hist_gen_negative_mu", " Gen pT (#mu^{-}) " , 400,0,200);
+    TH1D * hist_id_negative_mu = new TH1D("hist_id_negative_mu", " id (#mu^{-}) " , 15,-15,0);
   
-        // functions
-    std::pair<double,double> plotting_fitting_mass(TH1D* hist_fit, TString saving_name);
 
+        // functions
+    std::pair<double,double> plotting_fitting_mass_BW(TH1D* hist_fit, TString saving_name);
+    std::pair<double,double> plotting_fitting_mass_DSCB(TH1D* hist_fit, TString saving_name);
     void  plotting_hist(TH1D* hist_draw, TString title, TString saving_name, TString title_name_axis); 
 
     void graph_mean_pT();
+    void graph_mean_eta();
+    void graph_mean_phi();
 };
 
 
    void DY_2018_macro :: graph_mean_pT(){
-   TGraphErrors *gr = new TGraphErrors(10, pT_list,mean, 0,sigma);
+   TGraphErrors *gr_positive = new TGraphErrors(10, pT_list,mean_positive, 0,sigma_positive);
    // TGraph *gr = new TGraph(10,pT_list,mean);
-   gr->GetYaxis()->SetTitle("mass_{(#mu^{+}#mu^{-})}");
-   gr->GetXaxis()->SetTitle("pT (GeV)");
-   gr->SetTitle("#mu^{+}");
+   gr_positive->GetYaxis()->SetTitle("mass_{(#mu^{+}#mu^{-})}");
+   gr_positive->GetXaxis()->SetTitle("pT (GeV)");
+   gr_positive->SetTitle("#mu^{+}");
    TCanvas *graph_canvas = new TCanvas("graph_canvas","mass(#mu^{+}#mu^{-})");
    graph_canvas->cd(); 
    
-   gr->Draw("AC*");
+   gr_positive->Draw("AP*");
    graph_canvas->SaveAs(saving_path+"mean_pT_mu_positive.pdf"); 
-   
-   TGraphErrors *gr1 = new TGraphErrors(10, pT_list,mean, 0,sigma);
+ 
+   TGraphErrors *gr_negative = new TGraphErrors(10, pT_list,mean_negative, 0,sigma_negative);
    // TGraph *gr = new TGraph(10,pT_list,mean);
-   gr1->GetYaxis()->SetTitle("mass_{(#mu^{+}#mu^{-})}");
-   gr1->GetXaxis()->SetTitle("pT (GeV)");
-   gr1->GetYaxis()->SetRangeUser(90,92);
-   gr1->SetTitle("#mu^{+}");
+   gr_negative->GetYaxis()->SetTitle("mass_{(#mu^{+}#mu^{-})}");
+   gr_negative->GetXaxis()->SetTitle("pT (GeV)");
+   gr_negative->SetTitle("#mu^{-}");
    TCanvas *graph_canvas_1 = new TCanvas("graph_canvas_1","mass(#mu^{+}#mu^{-})");
    graph_canvas_1->cd(); 
    
-   gr1->Draw("AC*");
-   graph_canvas_1->SaveAs(saving_path+"mean_pT_mu_positive_resized.pdf"); 
+   gr_negative->Draw("AP*");
+   graph_canvas_1->SaveAs(saving_path+"mean_pT_mu_negative.pdf"); 
+  
+   }
 
+   void DY_2018_macro :: graph_mean_eta(){
+   TGraphErrors *gr_positive = new TGraphErrors(8, eta_list,mean_positive_eta, 0,sigma_positive_eta);
+   // TGraph *gr = new TGraph(10,pT_list,mean);
+   gr_positive->GetYaxis()->SetTitle("mass_{(#mu^{+}#mu^{-})}");
+   gr_positive->GetXaxis()->SetTitle("#eta");
+   gr_positive->SetTitle("#mu^{+}");
+   TCanvas *graph_canvas = new TCanvas("graph_canvas","mass(#mu^{+}#mu^{-})");
+   graph_canvas->cd(); 
+   
+   gr_positive->Draw("AP*");
+   graph_canvas->SaveAs(saving_path+"mean_eta_mu_positive.pdf"); 
+ 
+   TGraphErrors *gr_negative = new TGraphErrors(8, eta_list,mean_negative_eta, 0,sigma_negative_eta);
+   // TGraph *gr = new TGraph(10,pT_list,mean);
+   gr_negative->GetYaxis()->SetTitle("mass_{(#mu^{+}#mu^{-})}");
+   gr_negative->GetXaxis()->SetTitle("#eta");
+   gr_negative->SetTitle("#mu^{-}");
+   TCanvas *graph_canvas_1 = new TCanvas("graph_canvas_1","mass(#mu^{+}#mu^{-})");
+   graph_canvas_1->cd(); 
+   
+   gr_negative->Draw("AP*");
+   graph_canvas_1->SaveAs(saving_path+"mean_eta_mu_negative.pdf"); 
+  
+   }
+
+   void DY_2018_macro :: graph_mean_phi(){
+   TGraphErrors *gr_positive = new TGraphErrors(8, phi_list,mean_positive_phi, 0,sigma_positive_phi);
+   // TGraph *gr = new TGraph(10,pT_list,mean);
+   gr_positive->GetYaxis()->SetTitle("mass_{(#mu^{+}#mu^{-})}");
+   gr_positive->GetXaxis()->SetTitle("#phi");
+   gr_positive->SetTitle("#mu^{+}");
+   TCanvas *graph_canvas = new TCanvas("graph_canvas","mass(#mu^{+}#mu^{-})");
+   graph_canvas->cd(); 
+   
+   gr_positive->Draw("AP*");
+   graph_canvas->SaveAs(saving_path+"mean_phi_mu_positive.pdf"); 
+ 
+   TGraphErrors *gr_negative = new TGraphErrors(8, phi_list,mean_negative_phi, 0,sigma_negative_phi);
+   // TGraph *gr = new TGraph(10,pT_list,mean);
+   gr_negative->GetYaxis()->SetTitle("mass_{(#mu^{+}#mu^{-})}");
+   gr_negative->GetXaxis()->SetTitle("#phi");
+   gr_negative->SetTitle("#mu^{-}");
+   TCanvas *graph_canvas_1 = new TCanvas("graph_canvas_1","mass(#mu^{+}#mu^{-})");
+   graph_canvas_1->cd(); 
+   
+   gr_negative->Draw("AP*");
+   graph_canvas_1->SaveAs(saving_path+"mean_phi_mu_negative.pdf"); 
+  
    }
 
    void DY_2018_macro :: plotting_hist(TH1D * hist_draw, TString title, TString saving_name, TString title_name_axis){
@@ -383,7 +506,7 @@ public :
 
    }
 
-   std::pair<double,double> DY_2018_macro :: plotting_fitting_mass(TH1D * hist_fit, TString saving_name){
+   std::pair<double,double> DY_2018_macro :: plotting_fitting_mass_BW(TH1D * hist_fit, TString saving_name){
   // Fit the mass into Breit Wigner
      TString title_name = " m(#mu^{+}  #mu^{-}) ";
      RooRealVar mass_var("mass_var","mass_var",60,120);
@@ -408,7 +531,7 @@ public :
      xframe->getAttText()->SetTextSize(0.025);
      xframe->GetXaxis()->SetTitle("m_{#mu^{+}#mu^{-}}");
      
-     xframe->GetYaxis()->SetTitle("number of events");
+     xframe->GetYaxis()->SetTitle("N/0.2 (GeV)");
      xframe->Draw();
      gStyle->SetOptStat();
      tmp->SaveAs(saving_path+ saving_name+".pdf");
@@ -417,8 +540,42 @@ public :
      return std::make_pair(mean_mass.getVal(),mean_mass.getError());   
      }
   
-
-
+   std::pair<double,double> DY_2018_macro :: plotting_fitting_mass_DSCB(TH1D * hist_fit, TString saving_name){
+  // Fit the mass into DSCB
+    RooRealVar m4mu("m4mu", "var", 60,120, "");
+    RooDataHist histo("histo","dataset with var",m4mu,histogram);
+    RooRealVar Mean("Mean", "Mean",91, 88,94);
+    RooRealVar Sigma("#sigma", "#sigma", 2.88, 1, 5);//sigma[decay]);
+    RooRealVar AlphaL("#alpha_{L}", "#alpha_{L}", 1, 0, 30);//alphaL[decay]);
+    RooRealVar ExpL("n_{L}", "n_{L}", 1, 0, 30);//expL[decay]);
+    RooRealVar AlphaR("#alpha_{R}", "#alpha_{R}", 1, 0, 30);//alphaR[decay]);
+    RooRealVar ExpR("n_{R}", "n_{R}", 1, 1, 50);//expR[decay]);
+    RooMyPDF_DSCB DSCB("DSCB", "DSCB", m4mu, Mean, Sigma, AlphaL, ExpL, AlphaR, ExpR);
+   
+    TCanvas *c_MC = new TCanvas("c_MC", "c_MC", 800, 600);
+    c_MC->SetFrameFillColor(0);
+    c_MC->cd();  
+    TString title = "m(#mu^{+} #mu^{-})";
+    RooPlot* xframe = m4mu.frame(RooFit::Title(title));
+    histo.plotOn(xframe);
+   
+    Int_t color = kRed+2;
+    Double_t size_text = 0.020;
+    DSCB.fitTo(histo, Range(60,120));
+    DSCB.plotOn(xframe, RooFit::LineColor(color));
+    DSCB.paramOn(xframe, RooFit::Layout(0.15, 0.35, 0.90));
+    xframe->getAttText()->SetTextSize(size_text);
+    xframe->getAttText()->SetTextColor(color);
+    xframe->GetXaxis()->SetTitle("m(#mu^{+} #mu^{-})");
+    xframe->GetYaxis()->SetTitle("N/(0.2 GeV)");
+    xframe->GetXaxis()->SetTitleOffset(1.4);
+    gStyle->SetOptStat();
+    c_MC->SaveAs(save_dir_path+ saving_name + ".pdf");
+    // + ".pdf");
+    
+    std::cout<<" Z mass mean : "<<Mean.getVal()<<" width : "<<Sigma.getVal()<<std::endl;
+    return std::make_pair(Mean.getVal(),Mean.getError());   
+}
 #endif
 
 #ifdef DY_2018_macro_cxx
@@ -478,6 +635,7 @@ void DY_2018_macro::Init(TTree *tree)
    fCurrent = -1;
    fChain->SetMakeClass(1);
 
+   cout<<"started"<<endl;
    fChain->SetBranchAddress("GENmass2l", &GENmass2l, &b_GENmass2l);
    fChain->SetBranchAddress("genLep_pt1", &genLep_pt1, &b_genLep_pt1);
    fChain->SetBranchAddress("genLep_pt2", &genLep_pt2, &b_genLep_pt2);
