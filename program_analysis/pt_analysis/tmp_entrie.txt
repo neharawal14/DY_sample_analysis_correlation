@@ -1,0 +1,44 @@
+entries in all positive 10 pT bins before smearing
+5381
+38913
+53953
+61314
+19612
+11393
+4470
+2499
+1127
+1051
+entries in all negative 10 pT bins before smearing
+5627
+39045
+54769
+60994
+19008
+11275
+4415
+2546
+1035
+1056
+entries in all positive 10 pT bins after smearing
+5436
+38975
+54127
+60693
+19824
+11471
+4493
+2497
+1155
+1038
+entries in all negative 10 pT bins after smearing
+5643
+39166
+54952
+60438
+19198
+11299
+4424
+2564
+1039
+1048

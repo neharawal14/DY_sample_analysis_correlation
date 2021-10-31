@@ -1,3 +1,9 @@
 *.root
 */*.root
 */*/*.root
+*.pdf
+*/*.pdf
+*/*/*.pdf
+*/*/*/*.pdf
+*/*/*/*/*.pdf
+
